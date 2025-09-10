@@ -44,31 +44,61 @@ knitr::opts_chunk$set(echo = TRUE)
 1. Write a function to simulate rolling a 6-sided die and returns the result.
 
 ```{r}
+dice_sim <- function (num_rolls=1){
+sample(1:6,num_rolls,replace=T)
+}
 
+dice_sim()
 ```
+
+
+
 
 
 
 1. Write a function to simulate rolling 2 6-sided dice that returns the sum of the rolls. 
 
 ```{r}
-
-
+dice_sum <- function (num_rolls=2){
+all_rolls <-sample(1:6,num_rolls,replace=T)
+   return(sum(all_rolls))
+}
+dice_sum(4)
 ```
+
 
 
 1. Write a function that takes two people name's as strings, simulates rolling a 6-sided die for each of the names, then returns the name of the person with the higher roll. The function should reroll once on a tie, but if there is a second tie, it should return "draw". 
 
 ```{r}
 # Your one-roll function goes here
-
+high_roller <- function(player1,player2,rolls=1){
+   p1_score <- dice_sim(rolls)
+   p2_score <- dice_sim(rolls)
+   if (p1_score == p2_score){
+      p1_score <-dice_sim(rolls)
+      p2_score <- dice_sim(rolls)
+   }
+   if(p1_score>p2_score){winner <-player1}
+   else if (p2_score > p1_score) {winner <-player2}
+   else {(return('Draw'))}
+   return(sprintf('The winner is %s',winner))
+}
+high_roller('a','b')
 ```
 
 
-2. Write a second function (you may start by modifying the first one) that takes two names as strings, simulates both of them rolling die 15 times, and returns the name of the person who "won" more rolls. Don't reroll ties this time, but don't count them as "wins". 
+
+2. Write a second function (you may start by modifying the first one) that takes two names as strings, simulates both of them rolling die 15 times, and returns the name of the person who "won" more rolls. Don't reroll ties this time, but don't count them as "wins".
 
 ```{r}
-
+best_roller <- function(player1,player2,rolls=1){
+   p1_score <- dice_sim(rolls)
+   p2_score <- dice_sim(rolls)
+   try <- p1_score > p2_score
+   return(c(try,p1_score,p2_score))
+}
+best_roller('a','b',3)
 
 ```
 
