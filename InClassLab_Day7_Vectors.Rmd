@@ -1,7 +1,7 @@
 ---
 title: "In Class Lab"
-author: "Dr. Shoemaker"
-date: "DATA 2401"
+author: "Lindsey Smith"
+date: "Sept. 10, 2025"
 output: html_document
 ---
 **Note: Your exam will be in a similar format to this (RMarkdown File with Questions and Code chunks for your answers), so make sure you have the process for knitting to html working.** 
