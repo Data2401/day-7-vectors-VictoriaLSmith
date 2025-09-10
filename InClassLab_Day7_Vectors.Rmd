@@ -75,16 +75,18 @@ dice_sum(4)
 high_roller <- function(player1,player2,rolls=1){
    p1_score <- dice_sim(rolls)
    p2_score <- dice_sim(rolls)
-   if (p1_score == p2_score){
+
+   if (p1_score == p2_score){ # if players roll same number
       p1_score <-dice_sim(rolls)
       p2_score <- dice_sim(rolls)
    }
-   if(p1_score>p2_score){winner <-player1}
-   else if (p2_score > p1_score) {winner <-player2}
-   else {(return('Draw'))}
+   #Rules of winning
+   if(p1_score>p2_score){winner <-player1}# if player1 has more wins
+   else if (p2_score > p1_score) {winner <-player2} # if player2 has more wins
+   else {(return('Draw'))} # if players roll the same number twice
    return(sprintf('The winner is %s',winner))
 }
-high_roller('a','b')
+high_roller('alice','bob')
 ```
 
 
@@ -93,12 +95,21 @@ high_roller('a','b')
 
 ```{r}
 best_roller <- function(player1,player2,rolls=1){
-   p1_score <- dice_sim(rolls)
-   p2_score <- dice_sim(rolls)
-   try <- p1_score > p2_score
-   return(c(try,p1_score,p2_score))
+   p1_rolls <- dice_sim(rolls) # sim. player 1 rolls
+   p2_rolls <- dice_sim(rolls) #sim. player 2 rolls
+
+   p1_wins <- (p1_rolls > p2_rolls)  # filtering for player1 wins
+   p2_wins <- (p2_rolls > p1_rolls) #filtering for player2 wins
+
+   #Rules of winning
+   if (sum(p1_wins) > sum(p2_wins)){ # If player1 has more wins
+      return(player1)
+   }
+   else if (sum(p1_wins) < sum(p2_wins)) {return(player2)} # if player2 has more wins
+   else {return("It's a draw")} # if there is a tie
 }
-best_roller('a','b',3)
+
+best_roller('alice','bob',15)
 
 ```
 
@@ -107,5 +118,25 @@ best_roller('a','b',3)
 
 ```{r}
 # Your "cheating" function goes here
-```
+cheating <-function(player1,player2,rolls){
+   cheater_dice <- sample(1:6,rolls,replace=TRUE,prob=c(rep(.125,4),rep(.25,2))) # Creating weighted dice with a 50% total probability of getting 5 or 6
+   p1_rolls <- cheater_dice #assigned weighted dice to player_1
+   p2_rolls <- dice_sim(rolls)
+   p1_wins <- (p1_rolls > p2_rolls) # filtering for player_1 wins
+   p2_wins <- (p2_rolls > p1_rolls) # filtering for player-2
 
+   #Rules of winning
+   if (sum(p1_wins) > sum(p2_wins)){ # If player 1 has more wins
+      return(player1)
+   }
+   else if (sum(p1_wins) < sum(p2_wins)) {return(player2)} # if player 2 more wins
+   else(return("It's a draw")) # if neither player has more wins
+
+
+}
+cheating('alice','bob',15)
+
+cheater_results <- function(){
+   rep(cheating(player1,player2))
+}
+```
